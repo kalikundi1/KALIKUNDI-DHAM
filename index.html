@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কালিকুন্ডি ধাম মন্দির | Kalikundi Dham Mandir</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-om"></i> কালিকুন্ডি ধাম | Kalikundi Dham
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#home">হোম | Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#services">সেবা | Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#booking">বুকিং | Book Now</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contact">যোগাযোগ | Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>কালিকুন্ডি ধাম মন্দিরে আপনাকে স্বাগতম</h1>
+            <h2>Welcome to Kalikundi Dham Mandir</h2>
+            <p>Experience divine blessings and spiritual peace</p>
+            <a href="#booking" class="btn btn-primary btn-lg">Book Now</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About Our Mandir</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="about-content">
+                        <p>কালিকুন্ডি ধাম মন্দির একটি পবিত্র স্থান যেখানে আপনি আধ্যাত্মিক শান্তি এবং দিব্য আশীর্বাদ পেতে পারেন। আমাদের মন্দিরে বিভিন্ন ধরনের পূজা এবং ভোগ সেবা প্রদান করা হয়।</p>
+                        <p>Kalikundi Dham Mandir is a sacred place where you can experience spiritual peace and divine blessings. We offer various types of pujas and bhog services at our temple.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="about-image">
+                        <img src="https://source.unsplash.com/600x400/?temple,hindu" alt="Kalikundi Dham Mandir" class="img-fluid rounded">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="row">
+                <!-- Puja Services -->
+                <div class="col-md-6">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-pray"></i>
+                        </div>
+                        <h3>Puja Services</h3>
+                        <ul>
+                            <li><strong>Birthday Pujan</strong> - Celebrate your special day with divine blessings</li>
+                            <li><strong>Onnopraton Pujan</strong> - Traditional ceremony for special occasions</li>
+                            <li><strong>Special Pujans</strong> - Book any date that is special for you</li>
+                            <li><strong>Purnima Special Events</strong> - Special ceremonies on full moon days</li>
+                        </ul>
+                        <a href="#booking" class="btn btn-outline-primary">Book Puja</a>
+                    </div>
+                </div>
+                <!-- Bhog Services -->
+                <div class="col-md-6">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3>Bhog Services</h3>
+                        <ul>
+                            <li><strong>Sora Bhog</strong> - ₹60</li>
+                            <li><strong>Saturday Khichuri Bhog</strong> - ₹60 (Available only on Saturdays)</li>
+                            <li><strong>Family Dining</strong> - ₹100 per person (Dine with family in the mandir)</li>
+                        </ul>
+                        <a href="#booking" class="btn btn-outline-primary">Book Bhog</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Events Section -->
+    <section id="events" class="events">
+        <div class="container">
+            <h2 class="section-title">Special Events</h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="event-card">
+                        <h3>Monthly Special Events</h3>
+                        <p>Every Purnima (Full Moon Day) we organize special Hindu events and ceremonies. Book in advance to participate in these divine celebrations.</p>
+                        <div class="event-calendar">
+                            <h4>Upcoming Purnima Dates</h4>
+                            <ul id="purnima-dates">
+                                <!-- Will be populated by JavaScript -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="booking">
+        <div class="container">
+            <h2 class="section-title">Book Your Service</h2>
+            <form id="bookingForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Select Service Type</label>
+                            <select class="form-control" id="serviceType" required>
+                                <option value="">Choose a service</option>
+                                <optgroup label="Puja Services">
+                                    <option value="birthday-pujan">Birthday Pujan</option>
+                                    <option value="onnopraton-pujan">Onnopraton Pujan</option>
+                                    <option value="special-pujan">Special Pujan</option>
+                                    <option value="purnima-event">Purnima Special Event</option>
+                                </optgroup>
+                                <optgroup label="Bhog Services">
+                                    <option value="sora-bhog">Sora Bhog (₹60)</option>
+                                    <option value="khichuri-bhog">Saturday Khichuri Bhog (₹60)</option>
+                                    <option value="family-dining">Family Dining (₹100 per person)</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Select Date</label>
+                            <input type="date" class="form-control" id="bookingDate" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Your Name</label>
+                            <input type="text" class="form-control" id="customerName" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Contact Number</label>
+                            <input type="tel" class="form-control" id="customerPhone" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Additional Notes (Optional)</label>
+                    <textarea class="form-control" id="additionalNotes" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="confirmBooking" required>
+                        <label class="form-check-label" for="confirmBooking">
+                            I confirm that all the information provided is correct
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">Book Now</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="contact-info">
+                        <h3>Kalikundi Dham</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> J8CQ+9C, Kaliyaganj, West Bengal 733129</p>
+                        <p><i class="fas fa-phone"></i> <a href="tel:9332097084">9332097084</a></p>
+                        <p><i class="fas fa-envelope"></i> <a href="mailto:kalikundidham@gmail.com">kalikundidham@gmail.com</a></p>
+                        <div class="contact-hours">
+                            <h4>Opening Hours</h4>
+                            <p><strong>Monday - Sunday:</strong> 5:00 AM - 9:00 PM</p>
+                            <p><strong>Special Timings:</strong> Open 24 hours on special occasions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="map">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3591.9024424338!2d88.3214!3d25.1234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDA3JzM0LjIiTiA4OMKwMTknMTcuMCJF!5e0!3m2!1sen!2sin!4v1234567890" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Kalikundi Dham</h4>
+                    <p>A sacred place for divine blessings and spiritual peace</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#booking">Book Now</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=61574101216323" target="_blank" aria-label="Facebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Kalikundi Dham. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

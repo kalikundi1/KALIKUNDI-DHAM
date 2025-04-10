@@ -6,76 +6,84 @@ document.addEventListener('DOMContentLoaded', function() {
     const bookingForm = document.getElementById('bookingForm');
     
     if (bookingForm) {
-        bookingForm.addEventListener('submit', function(e) {
+        bookingForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Get form values
-            const serviceType = document.getElementById('serviceType').value;
-            const bookingDate = document.getElementById('bookingDate').value;
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const notes = document.getElementById('notes').value;
-            
-            // Validate form
-            if (!serviceType || !bookingDate || !name || !phone) {
-                showNotification('Please fill in all required fields', 'error');
-                return;
-            }
-            
-            // Validate phone number
-            if (!isValidPhoneNumber(phone)) {
-                showNotification('Please enter a valid phone number', 'error');
-                return;
-            }
-            
-            // Validate date based on service type
-            if (!isValidBookingDate(serviceType, bookingDate)) {
-                showNotification('Invalid date for the selected service', 'error');
-                return;
-            }
-            
-            // Create booking object
-            const booking = {
-                id: Date.now(),
-                serviceType: serviceType,
-                date: bookingDate,
-                name: name,
-                phone: phone,
-                notes: notes,
-                status: 'pending',
-                timestamp: new Date().toISOString(),
-                emailSent: false
-            };
-            
-            // Save booking
-            saveBooking(booking);
-            
-            // Send email notification
-            const emailSubject = `New Booking Request - ${serviceType}`;
-            const emailBody = `
-                New Booking Request Details:
+            try {
+                // Get form values
+                const serviceType = document.getElementById('serviceType').value;
+                const bookingDate = document.getElementById('bookingDate').value;
+                const name = document.getElementById('name').value;
+                const phone = document.getElementById('phone').value;
+                const notes = document.getElementById('notes').value;
                 
-                Service: ${serviceType}
-                Date: ${bookingDate}
-                Name: ${name}
-                Phone: ${phone}
-                Additional Notes: ${notes}
+                // Validate form
+                if (!serviceType || !bookingDate || !name || !phone) {
+                    showNotification('Please fill in all required fields', 'error');
+                    return;
+                }
                 
-                Status: Pending
-                Booking ID: ${booking.id}
+                // Validate phone number
+                if (!isValidPhoneNumber(phone)) {
+                    showNotification('Please enter a valid 10-digit phone number', 'error');
+                    return;
+                }
                 
-                Please check admin portal for more details.
-            `;
-            
-            // Create mailto link
-            const mailtoLink = `mailto:kalikundidham@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-            window.location.href = mailtoLink;
-            
-            // Show success message
-            showNotification('Booking request sent successfully! We will contact you shortly.', 'success');
-            
-            // Reset form
-            bookingForm.reset();
+                // Validate date based on service type
+                if (!isValidBookingDate(serviceType, bookingDate)) {
+                    showNotification('Invalid date for the selected service', 'error');
+                    return;
+                }
+                
+                // Create booking object with proper formatting
+                const booking = {
+                    id: Date.now().toString(),
+                    serviceType: serviceType,
+                    serviceName: getServiceName(serviceType),
+                    date: bookingDate,
+                    name: name.trim(),
+                    phone: phone.trim(),
+                    notes: notes.trim(),
+                    status: 'pending',
+                    timestamp: new Date().toISOString(),
+                    emailSent: false
+                };
+                
+                // Save booking first
+                saveBooking(booking);
+                
+                // Create email content
+                const emailSubject = `New Booking Request - ${booking.serviceName}`;
+                const emailBody = `
+New Booking Request Details:
+
+Service: ${booking.serviceName}
+Date: ${formatDate(booking.date)}
+Name: ${booking.name}
+Phone: ${booking.phone}
+${booking.notes ? `Additional Notes: ${booking.notes}\n` : ''}
+
+Status: Pending
+Booking ID: ${booking.id}
+
+Please check admin portal for more details.`;
+                
+                // Show success message first
+                showNotification('Booking request sent successfully! We will contact you shortly.', 'success');
+                
+                // Reset form
+                bookingForm.reset();
+                
+                // Open email client after small delay
+                setTimeout(() => {
+                    const mailtoLink = `mailto:kalikundidham@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+                    window.location.href = mailtoLink;
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Booking error:', error);
+                showNotification('An error occurred while processing your booking. Please try again.', 'error');
+            }
         });
     }
     
@@ -224,6 +232,10 @@ function showNotification(message, type) {
     notification.className = `notification ${type}`;
     notification.textContent = message;
     
+    // Remove any existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(n => n.remove());
+    
     document.body.appendChild(notification);
     
     // Show notification
@@ -238,16 +250,21 @@ function showNotification(message, type) {
 
 // Function to save booking
 function saveBooking(booking) {
-    // Get existing bookings
-    let bookings = JSON.parse(localStorage.getItem('kalikundiBookings') || '[]');
-    
-    // Add new booking
-    bookings.push(booking);
-    
-    // Save back to localStorage
-    localStorage.setItem('kalikundiBookings', JSON.stringify(bookings));
-    
-    // Log for debugging
-    console.log('Booking saved:', booking);
-    console.log('All bookings:', bookings);
+    try {
+        // Get existing bookings
+        let bookings = JSON.parse(localStorage.getItem('kalikundiBookings') || '[]');
+        
+        // Add new booking
+        bookings.push(booking);
+        
+        // Save back to localStorage
+        localStorage.setItem('kalikundiBookings', JSON.stringify(bookings));
+        
+        // Log for debugging
+        console.log('Booking saved successfully:', booking);
+        return true;
+    } catch (error) {
+        console.error('Error saving booking:', error);
+        throw new Error('Failed to save booking');
+    }
 } 

@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Kalikundi Dham</title>
-    <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .admin-login-container {
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+        }
+        .login-container {
             max-width: 500px;
             margin: 50px auto;
             padding: 30px;
@@ -16,83 +19,85 @@
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
-        .admin-header {
+        .login-header {
             text-align: center;
             margin-bottom: 30px;
         }
-        .admin-header i {
-            font-size: 3rem;
+        .login-header h1 {
             color: #8B4513;
-            margin-bottom: 15px;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .login-header p {
+            color: #6c757d;
+        }
+        .form-control {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .btn-login {
+            background-color: #8B4513;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            width: 100%;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        .btn-login:hover {
+            background-color: #6B3410;
+            color: white;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-link a {
+            color: #8B4513;
+            text-decoration: none;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
         }
         .booking-preview {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 30px;
+            padding: 20px;
             background-color: #f8f9fa;
             border-radius: 5px;
             border-left: 4px solid #8B4513;
         }
-        .booking-preview h4 {
+        .booking-preview h3 {
             color: #8B4513;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .booking-preview p {
             margin-bottom: 10px;
         }
-        .security-info {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-            border-left: 4px solid #28a745;
-        }
-        .security-info h4 {
-            color: #28a745;
-            margin-bottom: 10px;
-        }
-        .password-requirements {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 10px;
-        }
-        .requirement {
-            margin: 5px 0;
-        }
-        .requirement i {
-            margin-right: 5px;
-        }
-        .requirement.valid {
-            color: #28a745;
-        }
-        .requirement.invalid {
-            color: #dc3545;
+        .booking-preview .label {
+            font-weight: 600;
+            color: #495057;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="admin-login-container">
-            <div class="admin-header">
-                <i class="fas fa-user-shield"></i>
-                <h2>Admin Login</h2>
-                <p>Kalikundi Dham Mandir</p>
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Admin Login</h1>
+                <p>Please enter your credentials to access the admin portal</p>
             </div>
             
+            <!-- Booking Preview Section -->
             <div id="bookingPreview" class="booking-preview" style="display: none;">
-                <h4><i class="fas fa-info-circle"></i> New Booking Request</h4>
-                <div id="bookingDetails"></div>
+                <h3><i class="fas fa-info-circle"></i> New Booking Request</h3>
+                <div id="bookingDetails">
+                    <!-- Booking details will be populated here -->
+                </div>
             </div>
             
-            <div class="security-info">
-                <h4><i class="fas fa-shield-alt"></i> Security System Active</h4>
-                <p>5-Layer Security Protection:</p>
-                <ul>
-                    <li>Authentication & Authorization</li>
-                    <li>Data Encryption</li>
-                    <li>Input Validation</li>
-                    <li>Access Control</li>
-                    <li>Audit Logging</li>
-                </ul>
-            </div>
-            
-            <form id="adminLoginForm">
+            <form id="loginForm">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" required>
@@ -100,164 +105,66 @@
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" required>
-                    <div class="password-requirements">
-                        <div class="requirement" id="lengthReq">
-                            <i class="fas fa-circle"></i> At least 8 characters
-                        </div>
-                        <div class="requirement" id="upperReq">
-                            <i class="fas fa-circle"></i> One uppercase letter
-                        </div>
-                        <div class="requirement" id="lowerReq">
-                            <i class="fas fa-circle"></i> One lowercase letter
-                        </div>
-                        <div class="requirement" id="numberReq">
-                            <i class="fas fa-circle"></i> One number
-                        </div>
-                        <div class="requirement" id="specialReq">
-                            <i class="fas fa-circle"></i> One special character
-                        </div>
-                    </div>
                 </div>
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Login</button>
-                </div>
+                <button type="submit" class="btn btn-login">Login</button>
             </form>
             
-            <div class="text-center mt-3">
-                <a href="index.html" class="text-decoration-none">
-                    <i class="fas fa-arrow-left"></i> Back to Website
-                </a>
+            <div class="back-link">
+                <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="security.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Check if there's a booking in sessionStorage
             const lastBooking = sessionStorage.getItem('lastBooking');
+            const bookingPreview = document.getElementById('bookingPreview');
+            const bookingDetails = document.getElementById('bookingDetails');
+            
             if (lastBooking) {
                 try {
-                    const booking = SecuritySystem.encryption.decrypt(lastBooking);
-                    const bookingPreview = document.getElementById('bookingPreview');
-                    const bookingDetails = document.getElementById('bookingDetails');
-                    
-                    // Validate booking data
-                    const validatedBooking = SecuritySystem.validation.validateBooking(booking);
+                    // Parse the booking data
+                    const booking = JSON.parse(lastBooking);
                     
                     // Display booking details
                     bookingDetails.innerHTML = `
-                        <p><strong>Service:</strong> ${validatedBooking.serviceType}</p>
-                        <p><strong>Date:</strong> ${new Date(validatedBooking.bookingDate).toLocaleDateString()}</p>
-                        <p><strong>Name:</strong> ${validatedBooking.name}</p>
-                        <p><strong>Phone:</strong> ${validatedBooking.phone || 'Invalid phone number'}</p>
-                        <p><strong>Notes:</strong> ${validatedBooking.notes || 'No additional notes'}</p>
+                        <p><span class="label">Service:</span> ${booking.serviceName}</p>
+                        <p><span class="label">Date:</span> ${new Date(booking.bookingDate).toLocaleDateString()}</p>
+                        <p><span class="label">Name:</span> ${booking.name}</p>
+                        <p><span class="label">Phone:</span> ${booking.phone}</p>
+                        <p><span class="label">Notes:</span> ${booking.notes || 'No additional notes'}</p>
                     `;
                     
                     // Show the booking preview
                     bookingPreview.style.display = 'block';
                     
-                    // Log the booking preview
-                    SecuritySystem.audit.logEvent({
-                        type: 'BOOKING_PREVIEW',
-                        details: 'New booking request previewed',
-                        user: 'system'
-                    });
-                    
-                    // Clear the session storage after displaying
-                    sessionStorage.removeItem('lastBooking');
+                    // Clear the booking from sessionStorage after displaying
+                    // We'll keep it in sessionStorage until the admin logs in
+                    // sessionStorage.removeItem('lastBooking');
                 } catch (error) {
-                    console.error('Error displaying booking:', error);
-                    SecuritySystem.audit.logEvent({
-                        type: 'ERROR',
-                        details: 'Error processing booking preview: ' + error.message,
-                        user: 'system'
-                    });
+                    console.error('Error parsing booking data:', error);
                 }
             }
             
-            // Password validation
-            const passwordInput = document.getElementById('password');
-            passwordInput.addEventListener('input', function() {
-                const password = this.value;
-                const requirements = SecuritySystem.auth.passwordRequirements;
-                
-                // Update requirement indicators
-                document.getElementById('lengthReq').className = 
-                    `requirement ${password.length >= requirements.minLength ? 'valid' : 'invalid'}`;
-                document.getElementById('upperReq').className = 
-                    `requirement ${/[A-Z]/.test(password) ? 'valid' : 'invalid'}`;
-                document.getElementById('lowerReq').className = 
-                    `requirement ${/[a-z]/.test(password) ? 'valid' : 'invalid'}`;
-                document.getElementById('numberReq').className = 
-                    `requirement ${/\d/.test(password) ? 'valid' : 'invalid'}`;
-                document.getElementById('specialReq').className = 
-                    `requirement ${/[!@#$%^&*(),.?":{}|<>]/.test(password) ? 'valid' : 'invalid'}`;
-            });
-            
-            // Handle admin login
-            const adminLoginForm = document.getElementById('adminLoginForm');
-            adminLoginForm.addEventListener('submit', function(e) {
+            // Handle login form submission
+            const loginForm = document.getElementById('loginForm');
+            loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
                 const username = document.getElementById('username').value;
                 const password = document.getElementById('password').value;
                 
-                // Check login attempts
-                if (!SecuritySystem.auth.checkLoginAttempts(username)) {
-                    alert('Account is temporarily locked. Please try again later.');
-                    SecuritySystem.audit.logEvent({
-                        type: 'LOGIN_FAILED',
-                        details: 'Account locked due to too many attempts',
-                        user: username
-                    });
-                    return;
-                }
-                
-                // Validate password
-                if (!SecuritySystem.auth.validatePassword(password)) {
-                    alert('Password does not meet security requirements.');
-                    SecuritySystem.auth.recordLoginAttempt(username, false);
-                    SecuritySystem.audit.logEvent({
-                        type: 'LOGIN_FAILED',
-                        details: 'Invalid password format',
-                        user: username
-                    });
-                    return;
-                }
-                
                 // Simple authentication (in a real app, this would be server-side)
-                if (username === 'admin' && password === 'KalikundiDham@2024') {
-                    // Create secure session
-                    const session = {
-                        username: username,
-                        role: 'admin',
-                        timestamp: Date.now()
-                    };
-                    
-                    // Encrypt session data
-                    const encryptedSession = SecuritySystem.encryption.encrypt(session);
-                    localStorage.setItem('adminSession', encryptedSession);
-                    
-                    // Record successful login
-                    SecuritySystem.auth.recordLoginAttempt(username, true);
-                    SecuritySystem.audit.logEvent({
-                        type: 'LOGIN_SUCCESS',
-                        details: 'Admin login successful',
-                        user: username
-                    });
+                if (username === 'admin' && password === 'admin123') {
+                    // Store login status
+                    localStorage.setItem('adminLoggedIn', 'true');
                     
                     // Redirect to admin dashboard
                     window.location.href = 'admin.html';
                 } else {
-                    // Record failed login
-                    SecuritySystem.auth.recordLoginAttempt(username, false);
-                    SecuritySystem.audit.logEvent({
-                        type: 'LOGIN_FAILED',
-                        details: 'Invalid credentials',
-                        user: username
-                    });
-                    
                     alert('Invalid username or password');
                 }
             });

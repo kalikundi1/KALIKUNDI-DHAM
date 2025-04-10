@@ -4,512 +4,414 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Kalikundi Dham</title>
-    <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .admin-dashboard {
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+        }
+        .dashboard-container {
             padding: 20px;
         }
-        .admin-header {
+        .dashboard-header {
+            background-color: #8B4513;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #ddd;
         }
-        .admin-header h1 {
+        .dashboard-header h1 {
             margin: 0;
-            color: #8B4513;
+            font-size: 24px;
         }
-        .admin-stats {
+        .stats-container {
             display: flex;
+            flex-wrap: wrap;
             gap: 20px;
             margin-bottom: 30px;
         }
         .stat-card {
-            flex: 1;
+            background-color: white;
+            border-radius: 10px;
             padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 200px;
             text-align: center;
-        }
-        .stat-card i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: #8B4513;
         }
         .stat-card h3 {
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 18px;
+            color: #6c757d;
         }
-        .stat-card p {
-            margin: 5px 0 0;
-            color: #666;
+        .stat-card .number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #8B4513;
+            margin: 10px 0;
         }
-        .bookings-table {
-            background-color: #fff;
-            border-radius: 8px;
+        .bookings-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            margin-bottom: 30px;
         }
-        .bookings-table th {
-            background-color: #8B4513;
-            color: white;
+        .bookings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .bookings-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #8B4513;
+        }
+        .table {
+            width: 100%;
+            margin-bottom: 0;
+        }
+        .table th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+        }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
         }
         .status-pending {
-            color: #f39c12;
+            background-color: #ffc107;
+            color: #212529;
         }
         .status-confirmed {
-            color: #27ae60;
+            background-color: #28a745;
+            color: white;
         }
         .status-cancelled {
-            color: #e74c3c;
+            background-color: #dc3545;
+            color: white;
         }
         .action-buttons {
             display: flex;
             gap: 5px;
         }
-        .action-buttons button {
+        .btn-action {
             padding: 5px 10px;
-            font-size: 0.8rem;
+            font-size: 12px;
+            border-radius: 5px;
         }
-        .new-booking {
-            background-color: #f8f9fa;
-            border-left: 4px solid #8B4513;
-        }
-        .security-badge {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
+        .btn-confirm {
             background-color: #28a745;
             color: white;
-            padding: 10px 20px;
+            border: none;
+        }
+        .btn-cancel {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+        }
+        .btn-view {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+        }
+        .modal-header {
+            background-color: #8B4513;
+            color: white;
+        }
+        .modal-footer {
+            border-top: 1px solid #dee2e6;
+        }
+        .logout-btn {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+            padding: 5px 15px;
             border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            cursor: pointer;
         }
-        .security-badge i {
-            font-size: 1.2rem;
-        }
-        .audit-logs {
-            margin-top: 30px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-        .audit-logs h3 {
-            color: #8B4513;
-            margin-bottom: 20px;
-        }
-        .log-entry {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            font-size: 0.9rem;
-        }
-        .log-entry:last-child {
-            border-bottom: none;
-        }
-        .log-time {
-            color: #666;
-            font-size: 0.8rem;
-        }
-        .log-event {
-            font-weight: bold;
-            color: #8B4513;
-        }
-        .log-user {
-            color: #28a745;
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
 <body>
-    <div class="admin-dashboard">
-        <div class="admin-header">
+    <div class="dashboard-container">
+        <div class="dashboard-header">
             <h1><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
-            <button id="logoutBtn" class="btn btn-outline-danger">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
+            <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
         
-        <div class="admin-stats">
+        <div class="stats-container">
             <div class="stat-card">
-                <i class="fas fa-calendar-check"></i>
-                <h3 id="totalBookings">0</h3>
-                <p>Total Bookings</p>
+                <h3>Total Bookings</h3>
+                <div class="number" id="totalBookings">0</div>
             </div>
             <div class="stat-card">
-                <i class="fas fa-clock"></i>
-                <h3 id="pendingBookings">0</h3>
-                <p>Pending Bookings</p>
+                <h3>Pending Bookings</h3>
+                <div class="number" id="pendingBookings">0</div>
             </div>
             <div class="stat-card">
-                <i class="fas fa-check-circle"></i>
-                <h3 id="confirmedBookings">0</h3>
-                <p>Confirmed Bookings</p>
+                <h3>Confirmed Bookings</h3>
+                <div class="number" id="confirmedBookings">0</div>
             </div>
             <div class="stat-card">
-                <i class="fas fa-times-circle"></i>
-                <h3 id="cancelledBookings">0</h3>
-                <p>Cancelled Bookings</p>
+                <h3>Cancelled Bookings</h3>
+                <div class="number" id="cancelledBookings">0</div>
             </div>
         </div>
         
-        <div class="bookings-table">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Service</th>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="bookingsTableBody">
-                    <!-- Bookings will be loaded here -->
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="audit-logs">
-            <h3><i class="fas fa-history"></i> Security Audit Logs</h3>
-            <div id="auditLogs">
-                <!-- Audit logs will be loaded here -->
+        <div class="bookings-container">
+            <div class="bookings-header">
+                <h2><i class="fas fa-calendar-check"></i> Recent Bookings</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Service</th>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookingsTableBody">
+                        <!-- Bookings will be loaded here -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
     
-    <div class="security-badge">
-        <i class="fas fa-shield-alt"></i>
-        <span>5-Layer Security Active</span>
+    <!-- Booking Details Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Booking Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="bookingModalBody">
+                    <!-- Booking details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
-
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="security.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if admin is logged in and session is valid
-            const session = localStorage.getItem('adminSession');
-            if (!session || !SecuritySystem.accessControl.validateSession()) {
-                SecuritySystem.audit.logEvent({
-                    type: 'ACCESS_DENIED',
-                    details: 'Invalid or expired session',
-                    user: 'unknown'
-                });
+            // Check if admin is logged in
+            const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+            if (!isLoggedIn) {
                 window.location.href = 'admin-login.html';
                 return;
             }
             
-            // Decrypt and validate session
-            const sessionData = SecuritySystem.encryption.decrypt(session);
-            if (!sessionData || !SecuritySystem.accessControl.checkPermission(sessionData.role, 'read')) {
-                SecuritySystem.audit.logEvent({
-                    type: 'ACCESS_DENIED',
-                    details: 'Insufficient permissions',
-                    user: sessionData?.username || 'unknown'
-                });
-                window.location.href = 'admin-login.html';
-                return;
-            }
-            
-            // Log successful access
-            SecuritySystem.audit.logEvent({
-                type: 'ACCESS_GRANTED',
-                details: 'Admin dashboard accessed',
-                user: sessionData.username
-            });
-            
-            // Handle logout
-            document.getElementById('logoutBtn').addEventListener('click', function() {
-                SecuritySystem.audit.logEvent({
-                    type: 'LOGOUT',
-                    details: 'Admin logged out',
-                    user: sessionData.username
-                });
-                localStorage.removeItem('adminSession');
-                window.location.href = 'admin-login.html';
-            });
-            
-            // Load bookings
-            loadBookings();
-            
-            // Load audit logs
-            loadAuditLogs();
-            
-            // Check for new booking from sessionStorage
-            const lastBooking = sessionStorage.getItem('lastBooking');
-            if (lastBooking) {
-                try {
-                    const booking = SecuritySystem.encryption.decrypt(lastBooking);
-                    
-                    // Validate booking data
-                    const validatedBooking = SecuritySystem.validation.validateBooking(booking);
-                    
-                    // Add to adminBookings in localStorage
-                    let adminBookings = JSON.parse(localStorage.getItem('adminBookings') || '[]');
-                    adminBookings.push(validatedBooking);
-                    
-                    // Encrypt bookings before storing
-                    const encryptedBookings = SecuritySystem.encryption.encrypt(adminBookings);
-                    localStorage.setItem('adminBookings', encryptedBookings);
-                    
-                    // Log the new booking
-                    SecuritySystem.audit.logEvent({
-                        type: 'NEW_BOOKING',
-                        details: `New booking received: ${validatedBooking.serviceType}`,
-                        user: sessionData.username
-                    });
-                    
-                    // Clear sessionStorage
-                    sessionStorage.removeItem('lastBooking');
-                    
-                    // Reload bookings to show the new one
-                    loadBookings();
-                } catch (error) {
-                    console.error('Error processing new booking:', error);
-                    SecuritySystem.audit.logEvent({
-                        type: 'ERROR',
-                        details: 'Error processing new booking: ' + error.message,
-                        user: sessionData.username
-                    });
-                }
-            }
-        });
-        
-        function loadBookings() {
+            // Initialize variables
             const bookingsTableBody = document.getElementById('bookingsTableBody');
             const totalBookingsElement = document.getElementById('totalBookings');
             const pendingBookingsElement = document.getElementById('pendingBookings');
             const confirmedBookingsElement = document.getElementById('confirmedBookings');
             const cancelledBookingsElement = document.getElementById('cancelledBookings');
+            const logoutBtn = document.getElementById('logoutBtn');
             
-            // Get bookings from localStorage
-            const encryptedBookings = localStorage.getItem('adminBookings');
-            let bookings = [];
+            // Load bookings
+            loadBookings();
             
-            if (encryptedBookings) {
+            // Handle logout
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('adminLoggedIn');
+                window.location.href = 'admin-login.html';
+            });
+            
+            // Function to load bookings
+            function loadBookings() {
                 try {
-                    bookings = SecuritySystem.encryption.decrypt(encryptedBookings);
-                } catch (error) {
-                    console.error('Error decrypting bookings:', error);
-                    SecuritySystem.audit.logEvent({
-                        type: 'ERROR',
-                        details: 'Error decrypting bookings data',
-                        user: 'system'
+                    // Get bookings from localStorage
+                    const bookings = JSON.parse(localStorage.getItem('adminBookings') || '[]');
+                    
+                    // Sort bookings by date (newest first)
+                    bookings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                    
+                    // Update statistics
+                    updateStats(bookings);
+                    
+                    // Clear table
+                    bookingsTableBody.innerHTML = '';
+                    
+                    // Add bookings to table
+                    bookings.forEach(booking => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${booking.id}</td>
+                            <td>${booking.serviceName}</td>
+                            <td>${new Date(booking.bookingDate).toLocaleDateString()}</td>
+                            <td>${booking.name}</td>
+                            <td>${booking.phone}</td>
+                            <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    ${booking.status === 'pending' ? `
+                                        <button class="btn btn-action btn-confirm" onclick="confirmBooking(${booking.id})">
+                                            <i class="fas fa-check"></i> Confirm
+                                        </button>
+                                        <button class="btn btn-action btn-cancel" onclick="cancelBooking(${booking.id})">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    ` : ''}
+                                    <button class="btn btn-action btn-view" onclick="viewBooking(${booking.id})">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                        bookingsTableBody.appendChild(row);
                     });
-                }
-            }
-            
-            // Sort bookings by date (newest first)
-            bookings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-            
-            // Clear table
-            bookingsTableBody.innerHTML = '';
-            
-            // Count bookings by status
-            let pendingCount = 0;
-            let confirmedCount = 0;
-            let cancelledCount = 0;
-            
-            // Add bookings to table
-            bookings.forEach(booking => {
-                const row = document.createElement('tr');
-                
-                // Add 'new-booking' class if booking is less than 5 minutes old
-                const bookingTime = new Date(booking.timestamp);
-                const now = new Date();
-                const minutesDiff = (now - bookingTime) / (1000 * 60);
-                
-                if (minutesDiff < 5) {
-                    row.classList.add('new-booking');
-                }
-                
-                // Count by status
-                if (booking.status === 'pending') pendingCount++;
-                else if (booking.status === 'confirmed') confirmedCount++;
-                else if (booking.status === 'cancelled') cancelledCount++;
-                
-                row.innerHTML = `
-                    <td>${booking.id}</td>
-                    <td>${booking.serviceType}</td>
-                    <td>${new Date(booking.bookingDate).toLocaleDateString()}</td>
-                    <td>${booking.name}</td>
-                    <td>${booking.phone || 'Invalid'}</td>
-                    <td class="status-${booking.status}">${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</td>
-                    <td class="action-buttons">
-                        <button class="btn btn-sm btn-success confirm-btn" data-id="${booking.id}">
-                            <i class="fas fa-check"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger cancel-btn" data-id="${booking.id}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                        <button class="btn btn-sm btn-info view-btn" data-id="${booking.id}">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                `;
-                
-                bookingsTableBody.appendChild(row);
-            });
-            
-            // Update stats
-            totalBookingsElement.textContent = bookings.length;
-            pendingBookingsElement.textContent = pendingCount;
-            confirmedBookingsElement.textContent = confirmedCount;
-            cancelledBookingsElement.textContent = cancelledCount;
-            
-            // Add event listeners to action buttons
-            document.querySelectorAll('.confirm-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    updateBookingStatus(id, 'confirmed');
-                });
-            });
-            
-            document.querySelectorAll('.cancel-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    updateBookingStatus(id, 'cancelled');
-                });
-            });
-            
-            document.querySelectorAll('.view-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    viewBookingDetails(id);
-                });
-            });
-        }
-        
-        function updateBookingStatus(id, status) {
-            // Get current session
-            const session = SecuritySystem.encryption.decrypt(localStorage.getItem('adminSession'));
-            
-            // Check permissions
-            if (!SecuritySystem.accessControl.checkPermission(session.role, 'write')) {
-                alert('You do not have permission to update bookings.');
-                SecuritySystem.audit.logEvent({
-                    type: 'ACCESS_DENIED',
-                    details: 'Attempted to update booking without permission',
-                    user: session.username
-                });
-                return;
-            }
-            
-            // Get and decrypt bookings
-            const encryptedBookings = localStorage.getItem('adminBookings');
-            let bookings = [];
-            
-            if (encryptedBookings) {
-                try {
-                    bookings = SecuritySystem.encryption.decrypt(encryptedBookings);
+                    
+                    // Check if there's a new booking in sessionStorage
+                    const lastBooking = sessionStorage.getItem('lastBooking');
+                    if (lastBooking) {
+                        try {
+                            const booking = JSON.parse(lastBooking);
+                            
+                            // Check if booking already exists in the table
+                            const existingBooking = bookings.find(b => b.id === booking.id);
+                            if (!existingBooking) {
+                                // Add the new booking to localStorage
+                                bookings.push(booking);
+                                localStorage.setItem('adminBookings', JSON.stringify(bookings));
+                                
+                                // Reload the table to show the new booking
+                                loadBookings();
+                            }
+                            
+                            // Clear the booking from sessionStorage
+                            sessionStorage.removeItem('lastBooking');
+                        } catch (error) {
+                            console.error('Error processing new booking:', error);
+                        }
+                    }
                 } catch (error) {
-                    console.error('Error decrypting bookings:', error);
-                    return;
+                    console.error('Error loading bookings:', error);
+                    alert('Error loading bookings. Please try again.');
                 }
             }
             
-            // Find and update the booking
-            const bookingIndex = bookings.findIndex(b => b.id == id);
-            if (bookingIndex !== -1) {
-                bookings[bookingIndex].status = status;
+            // Function to update statistics
+            function updateStats(bookings) {
+                const total = bookings.length;
+                const pending = bookings.filter(b => b.status === 'pending').length;
+                const confirmed = bookings.filter(b => b.status === 'confirmed').length;
+                const cancelled = bookings.filter(b => b.status === 'cancelled').length;
                 
-                // Encrypt and save bookings
-                const encryptedUpdatedBookings = SecuritySystem.encryption.encrypt(bookings);
-                localStorage.setItem('adminBookings', encryptedUpdatedBookings);
-                
-                // Log the status update
-                SecuritySystem.audit.logEvent({
-                    type: 'BOOKING_UPDATED',
-                    details: `Booking ${id} status changed to ${status}`,
-                    user: session.username
-                });
-                
-                // Reload bookings
-                loadBookings();
-                
-                // Show notification
-                alert(`Booking ${id} has been ${status}`);
+                totalBookingsElement.textContent = total;
+                pendingBookingsElement.textContent = pending;
+                confirmedBookingsElement.textContent = confirmed;
+                cancelledBookingsElement.textContent = cancelled;
             }
-        }
-        
-        function viewBookingDetails(id) {
-            // Get current session
-            const session = SecuritySystem.encryption.decrypt(localStorage.getItem('adminSession'));
             
-            // Get and decrypt bookings
-            const encryptedBookings = localStorage.getItem('adminBookings');
-            let bookings = [];
-            
-            if (encryptedBookings) {
+            // Function to confirm booking
+            window.confirmBooking = function(bookingId) {
                 try {
-                    bookings = SecuritySystem.encryption.decrypt(encryptedBookings);
+                    // Get bookings
+                    const bookings = JSON.parse(localStorage.getItem('adminBookings') || '[]');
+                    
+                    // Find and update booking
+                    const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+                    if (bookingIndex !== -1) {
+                        bookings[bookingIndex].status = 'confirmed';
+                        
+                        // Save updated bookings
+                        localStorage.setItem('adminBookings', JSON.stringify(bookings));
+                        
+                        // Reload bookings
+                        loadBookings();
+                        
+                        alert('Booking confirmed successfully!');
+                    }
                 } catch (error) {
-                    console.error('Error decrypting bookings:', error);
-                    return;
+                    console.error('Error confirming booking:', error);
+                    alert('Error confirming booking. Please try again.');
                 }
-            }
+            };
             
-            // Find the booking
-            const booking = bookings.find(b => b.id == id);
-            if (booking) {
-                // Log the view action
-                SecuritySystem.audit.logEvent({
-                    type: 'BOOKING_VIEWED',
-                    details: `Booking ${id} details viewed`,
-                    user: session.username
-                });
-                
-                // Show booking details in an alert (in a real app, this would be a modal)
-                alert(`
-Booking Details:
-ID: ${booking.id}
-Service: ${booking.serviceType}
-Date: ${new Date(booking.bookingDate).toLocaleDateString()}
-Name: ${booking.name}
-Phone: ${booking.phone || 'Invalid'}
-Notes: ${booking.notes || 'No additional notes'}
-Status: ${booking.status}
-Timestamp: ${new Date(booking.timestamp).toLocaleString()}
-                `);
-            }
-        }
-        
-        function loadAuditLogs() {
-            const auditLogsContainer = document.getElementById('auditLogs');
-            const logs = SecuritySystem.audit.getLogs();
+            // Function to cancel booking
+            window.cancelBooking = function(bookingId) {
+                try {
+                    // Get bookings
+                    const bookings = JSON.parse(localStorage.getItem('adminBookings') || '[]');
+                    
+                    // Find and update booking
+                    const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+                    if (bookingIndex !== -1) {
+                        bookings[bookingIndex].status = 'cancelled';
+                        
+                        // Save updated bookings
+                        localStorage.setItem('adminBookings', JSON.stringify(bookings));
+                        
+                        // Reload bookings
+                        loadBookings();
+                        
+                        alert('Booking cancelled successfully!');
+                    }
+                } catch (error) {
+                    console.error('Error cancelling booking:', error);
+                    alert('Error cancelling booking. Please try again.');
+                }
+            };
             
-            // Sort logs by timestamp (newest first)
-            logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-            
-            // Display only the last 20 logs
-            const recentLogs = logs.slice(0, 20);
-            
-            auditLogsContainer.innerHTML = '';
-            
-            recentLogs.forEach(log => {
-                const logEntry = document.createElement('div');
-                logEntry.className = 'log-entry';
-                
-                const timestamp = new Date(log.timestamp).toLocaleString();
-                
-                logEntry.innerHTML = `
-                    <span class="log-time">${timestamp}</span>
-                    <span class="log-event">${log.event}</span>
-                    <span class="log-user">${log.user}</span>
-                    <div>${log.details}</div>
-                `;
-                
-                auditLogsContainer.appendChild(logEntry);
-            });
-        }
+            // Function to view booking details
+            window.viewBooking = function(bookingId) {
+                try {
+                    // Get bookings
+                    const bookings = JSON.parse(localStorage.getItem('adminBookings') || '[]');
+                    
+                    // Find booking
+                    const booking = bookings.find(b => b.id === bookingId);
+                    if (booking) {
+                        // Get modal elements
+                        const modalBody = document.getElementById('bookingModalBody');
+                        
+                        // Set modal content
+                        modalBody.innerHTML = `
+                            <div class="booking-details">
+                                <p><strong>ID:</strong> ${booking.id}</p>
+                                <p><strong>Service:</strong> ${booking.serviceName}</p>
+                                <p><strong>Date:</strong> ${new Date(booking.bookingDate).toLocaleDateString()}</p>
+                                <p><strong>Name:</strong> ${booking.name}</p>
+                                <p><strong>Phone:</strong> ${booking.phone}</p>
+                                <p><strong>Notes:</strong> ${booking.notes || 'No additional notes'}</p>
+                                <p><strong>Status:</strong> <span class="status-badge status-${booking.status}">${booking.status}</span></p>
+                                <p><strong>Timestamp:</strong> ${new Date(booking.timestamp).toLocaleString()}</p>
+                            </div>
+                        `;
+                        
+                        // Show modal
+                        const bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+                        bookingModal.show();
+                    }
+                } catch (error) {
+                    console.error('Error viewing booking:', error);
+                    alert('Error viewing booking. Please try again.');
+                }
+            };
+        });
     </script>
 </body>
 </html> 

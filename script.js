@@ -42,11 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (honeypotField && honeypotField.value) {
                         // If honeypot is filled, silently reject the submission
                         console.log('Bot detected - form submission rejected');
-                        SecuritySystem.audit.logEvent({
-                            type: 'BOT_DETECTED',
-                            details: 'Form submission rejected due to honeypot field being filled',
-                            user: 'bot'
-                        });
                         return;
                     }
                     
@@ -80,8 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         return;
                     }
                     
-                    // Validate phone number using security system
-                    if (!SecuritySystem.validation.validatePhone(formData.phone)) {
+                    // Validate phone number
+                    if (!/^\d{10}$/.test(formData.phone)) {
                         showNotification('Please enter a valid 10-digit phone number', 'error');
                         return;
                     }
@@ -111,22 +106,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         timestamp: new Date().toISOString()
                     };
                     
-                    // Validate booking data using security system
-                    const validatedBooking = SecuritySystem.validation.validateBooking(booking);
-                    
                     // Save booking and send email
-                    saveBooking(validatedBooking);
-                    sendBookingEmail(validatedBooking);
+                    saveBooking(booking);
+                    sendBookingEmail(booking);
                     
-                    // Forward to admin portal with encryption
-                    forwardToAdminPortal(validatedBooking);
-                    
-                    // Log the booking
-                    SecuritySystem.audit.logEvent({
-                        type: 'BOOKING_CREATED',
-                        details: `New booking created: ${validatedBooking.serviceType}`,
-                        user: 'customer'
-                    });
+                    // Forward to admin portal
+                    forwardToAdminPortal(booking);
                     
                     // Show success message and reset form
                     showNotification('Booking submitted successfully! You will be redirected to the admin portal.', 'success');
@@ -143,13 +128,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 } catch (error) {
                     console.error('Booking error:', error);
                     showNotification('An error occurred while processing your booking. Please try again.', 'error');
-                    
-                    // Log the error
-                    SecuritySystem.audit.logEvent({
-                        type: 'ERROR',
-                        details: 'Booking error: ' + error.message,
-                        user: 'customer'
-                    });
                 }
             });
         } else {
@@ -367,11 +345,19 @@ function isSameDay(date1, date2) {
 // Function to forward booking to admin portal
 function forwardToAdminPortal(booking) {
     try {
-        // Encrypt the booking data
-        const encryptedBooking = SecuritySystem.encryption.encrypt(booking);
+        // Store the booking in sessionStorage for admin portal access
+        sessionStorage.setItem('lastBooking', JSON.stringify(booking));
         
-        // Store the encrypted booking in sessionStorage for admin portal access
-        sessionStorage.setItem('lastBooking', encryptedBooking);
+        // Also store in localStorage for admin dashboard
+        let adminBookings = JSON.parse(localStorage.getItem('adminBookings') || '[]');
+        
+        // Check if booking already exists to avoid duplicates
+        const existingBookingIndex = adminBookings.findIndex(b => b.id === booking.id);
+        if (existingBookingIndex === -1) {
+            // Add new booking only if it doesn't exist
+            adminBookings.push(booking);
+            localStorage.setItem('adminBookings', JSON.stringify(adminBookings));
+        }
         
         console.log('Booking forwarded to admin portal:', booking);
         return true;

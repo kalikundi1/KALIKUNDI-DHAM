@@ -127,75 +127,72 @@
     <!-- Booking Section -->
     <section id="booking" class="booking-section">
         <div class="container">
-            <h2 class="section-title">Book Your Service</h2>
+            <h2>Book a Service</h2>
+            <p>Please fill out the form below to book your service. Same-day bookings must be made before 9:30 AM.</p>
+            
             <div class="booking-info">
-                <p><i class="fas fa-info-circle"></i> Bookings for today must be made before 9:30 AM</p>
+                <p><i class="fas fa-info-circle"></i> Important: Bookings for today must be made before 9:30 AM</p>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <form id="bookingForm" class="booking-form">
-                        <div class="mb-3">
-                            <label for="serviceType" class="form-label">Select Service <span class="text-danger">*</span></label>
-                            <select class="form-select" id="serviceType" name="serviceType" required>
-                                <option value="">Choose a service...</option>
-                                <optgroup label="Puja Services">
-                                    <option value="birthday-pujan">Birthday Pujan</option>
-                                    <option value="onnopraton-pujan">Onnopraton Pujan</option>
-                                    <option value="special-pujan">Special Pujan</option>
-                                    <option value="purnima-event">Purnima Special Event</option>
-                                </optgroup>
-                                <optgroup label="Bhog Services">
-                                    <option value="sora-bhog">Sora Bhog</option>
-                                    <option value="khichuri-bhog">Saturday Khichuri Bhog</option>
-                                    <option value="family-dining">Family Dining</option>
-                                </optgroup>
-                            </select>
-                            <div class="form-text">Please select the service you wish to book</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="bookingDate" class="form-label">Select Date <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="bookingDate" name="bookingDate" required>
-                            <div class="form-text">Select your preferred date for the service</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Your Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                            <div class="form-text">Enter your full name</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" placeholder="10-digit mobile number" required>
-                            <div class="form-text">Enter your 10-digit mobile number</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="notes" class="form-label">Additional Notes</label>
-                            <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Any special requests or information"></textarea>
-                            <div class="form-text">Optional: Add any special requests or information</div>
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="termsCheck" required>
-                            <label class="form-check-label" for="termsCheck">I agree to the terms and conditions <span class="text-danger">*</span></label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit Booking</button>
-                    </form>
+            
+            <form id="bookingForm" class="booking-form">
+                <!-- Honeypot field - hidden from real users but visible to bots -->
+                <div class="honeypot-field" aria-hidden="true" style="display:none">
+                    <input type="text" name="website" id="website" tabindex="-1" autocomplete="off">
+                    <label for="website">Website</label>
                 </div>
-                <div class="col-md-6">
-                    <div class="booking-info-card">
-                        <h3>Booking Information</h3>
-                        <ul>
-                            <li><i class="fas fa-clock"></i> <strong>Booking Cutoff:</strong> 9:30 AM for same-day bookings</li>
-                            <li><i class="fas fa-calendar-alt"></i> <strong>Advance Booking:</strong> Available up to 30 days in advance</li>
-                            <li><i class="fas fa-phone"></i> <strong>Confirmation:</strong> You will receive a confirmation email</li>
-                            <li><i class="fas fa-info-circle"></i> <strong>Special Events:</strong> Purnima events require 3 days advance booking</li>
-                        </ul>
-                        <div class="booking-help">
-                            <h4>Need Help?</h4>
-                            <p>If you encounter any issues with booking, please contact us:</p>
-                            <p><i class="fas fa-phone"></i> <a href="tel:9332097084">9332097084</a></p>
-                            <p><i class="fas fa-envelope"></i> <a href="mailto:kalikundidham@gmail.com">kalikundidham@gmail.com</a></p>
-                        </div>
-                    </div>
+                
+                <div class="form-group">
+                    <label for="serviceType">Select Service</label>
+                    <select id="serviceType" name="serviceType" required>
+                        <option value="">Choose a service...</option>
+                        <option value="birthday-pujan">Birthday Pujan</option>
+                        <option value="onnopraton-pujan">Onnopraton Pujan</option>
+                        <option value="special-pujan">Special Pujan</option>
+                        <option value="purnima-event">Purnima Special Event</option>
+                        <option value="sora-bhog">Sora Bhog</option>
+                        <option value="khichuri-bhog">Saturday Khichuri Bhog</option>
+                        <option value="family-dining">Family Dining</option>
+                    </select>
                 </div>
+                
+                <div class="form-group">
+                    <label for="bookingDate">Select Date</label>
+                    <input type="date" id="bookingDate" name="bookingDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Additional Notes</label>
+                    <textarea id="notes" name="notes" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="termsCheck" required>
+                        I agree to the terms and conditions
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Submit Booking</button>
+            </form>
+            
+            <div class="booking-info-card">
+                <h3>Booking Information</h3>
+                <ul>
+                    <li><i class="fas fa-clock"></i> Booking Cutoff: 9:30 AM for same-day bookings</li>
+                    <li><i class="fas fa-calendar-alt"></i> Advance booking available</li>
+                    <li><i class="fas fa-envelope"></i> Confirmation email will be sent</li>
+                    <li><i class="fas fa-info-circle"></i> Special events require advance notice</li>
+                </ul>
             </div>
         </div>
     </section>

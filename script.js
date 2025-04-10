@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const bookingForm = document.getElementById('bookingForm');
         const serviceTypeSelect = document.getElementById('serviceType');
         const bookingDateInput = document.getElementById('bookingDate');
+        const honeypotField = document.getElementById('website');
         
         if (bookingForm && serviceTypeSelect && bookingDateInput) {
             // Set minimum date to today
@@ -37,6 +38,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 
                 try {
+                    // Check honeypot field
+                    if (honeypotField && honeypotField.value) {
+                        // If honeypot is filled, silently reject the submission
+                        console.log('Bot detected - form submission rejected');
+                        SecuritySystem.audit.logEvent({
+                            type: 'BOT_DETECTED',
+                            details: 'Form submission rejected due to honeypot field being filled',
+                            user: 'bot'
+                        });
+                        return;
+                    }
+                    
                     // Get form values
                     const formData = {
                         serviceType: serviceTypeSelect.value,
@@ -67,8 +80,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         return;
                     }
                     
-                    // Validate phone number
-                    if (!/^\d{10}$/.test(formData.phone)) {
+                    // Validate phone number using security system
+                    if (!SecuritySystem.validation.validatePhone(formData.phone)) {
                         showNotification('Please enter a valid 10-digit phone number', 'error');
                         return;
                     }
@@ -98,12 +111,31 @@ document.addEventListener('DOMContentLoaded', function() {
                         timestamp: new Date().toISOString()
                     };
                     
+                    // Validate booking data using security system
+                    const validatedBooking = SecuritySystem.validation.validateBooking(booking);
+                    
                     // Save booking and send email
-                    saveBooking(booking);
-                    sendBookingEmail(booking);
+                    saveBooking(validatedBooking);
+                    sendBookingEmail(validatedBooking);
+                    
+                    // Forward to admin portal with encryption
+                    forwardToAdminPortal(validatedBooking);
+                    
+                    // Log the booking
+                    SecuritySystem.audit.logEvent({
+                        type: 'BOOKING_CREATED',
+                        details: `New booking created: ${validatedBooking.serviceType}`,
+                        user: 'customer'
+                    });
                     
                     // Show success message and reset form
-                    showNotification('Booking submitted successfully! Check your email for confirmation.', 'success');
+                    showNotification('Booking submitted successfully! You will be redirected to the admin portal.', 'success');
+                    
+                    // Redirect to admin portal after a short delay
+                    setTimeout(() => {
+                        window.location.href = 'admin-login.html';
+                    }, 2000);
+                    
                     bookingForm.reset();
                     bookingDateInput.min = today;
                     termsCheck.checked = false;
@@ -111,6 +143,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 } catch (error) {
                     console.error('Booking error:', error);
                     showNotification('An error occurred while processing your booking. Please try again.', 'error');
+                    
+                    // Log the error
+                    SecuritySystem.audit.logEvent({
+                        type: 'ERROR',
+                        details: 'Booking error: ' + error.message,
+                        user: 'customer'
+                    });
                 }
             });
         } else {
@@ -323,4 +362,21 @@ function isSameDay(date1, date2) {
     return date1.getFullYear() === date2.getFullYear() &&
            date1.getMonth() === date2.getMonth() &&
            date1.getDate() === date2.getDate();
+}
+
+// Function to forward booking to admin portal
+function forwardToAdminPortal(booking) {
+    try {
+        // Encrypt the booking data
+        const encryptedBooking = SecuritySystem.encryption.encrypt(booking);
+        
+        // Store the encrypted booking in sessionStorage for admin portal access
+        sessionStorage.setItem('lastBooking', encryptedBooking);
+        
+        console.log('Booking forwarded to admin portal:', booking);
+        return true;
+    } catch (error) {
+        console.error('Error forwarding to admin portal:', error);
+        return false;
+    }
 } 

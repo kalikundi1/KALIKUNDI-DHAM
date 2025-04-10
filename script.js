@@ -5,67 +5,79 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form submission handling
     const bookingForm = document.getElementById('bookingForm');
     
-    bookingForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form values
-        const serviceType = document.getElementById('serviceType').value;
-        const bookingDate = document.getElementById('bookingDate').value;
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-        const notes = document.getElementById('notes').value;
-        
-        // Validate form
-        if (!serviceType || !bookingDate || !name || !phone) {
-            showNotification('Please fill in all required fields', 'error');
-            return;
-        }
-        
-        // Validate phone number
-        if (!isValidPhoneNumber(phone)) {
-            showNotification('Please enter a valid phone number', 'error');
-            return;
-        }
-        
-        // Validate date based on service type
-        if (!isValidBookingDate(serviceType, bookingDate)) {
-            showNotification('Invalid date for the selected service', 'error');
-            return;
-        }
-        
-        // Create booking object
-        const booking = {
-            id: Date.now(), // Unique ID for the booking
-            serviceType: serviceType,
-            date: bookingDate,
-            name: name,
-            phone: phone,
-            notes: notes,
-            status: 'pending',
-            timestamp: new Date().toISOString()
-        };
-        
-        // Save booking to localStorage
-        saveBooking(booking);
-        
-        // Create booking message
-        const bookingMessage = `
-            Service: ${serviceType}
-            Date: ${bookingDate}
-            Name: ${name}
-            Phone: ${phone}
-            Additional Notes: ${notes}
-        `;
-        
-        // Send booking email
-        sendBookingEmail(bookingMessage);
-        
-        // Show success message
-        showNotification('Booking request sent successfully! We will contact you shortly.', 'success');
-        
-        // Reset form
-        bookingForm.reset();
-    });
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const serviceType = document.getElementById('serviceType').value;
+            const bookingDate = document.getElementById('bookingDate').value;
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const notes = document.getElementById('notes').value;
+            
+            // Validate form
+            if (!serviceType || !bookingDate || !name || !phone) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Validate phone number
+            if (!isValidPhoneNumber(phone)) {
+                showNotification('Please enter a valid phone number', 'error');
+                return;
+            }
+            
+            // Validate date based on service type
+            if (!isValidBookingDate(serviceType, bookingDate)) {
+                showNotification('Invalid date for the selected service', 'error');
+                return;
+            }
+            
+            // Create booking object
+            const booking = {
+                id: Date.now(),
+                serviceType: serviceType,
+                date: bookingDate,
+                name: name,
+                phone: phone,
+                notes: notes,
+                status: 'pending',
+                timestamp: new Date().toISOString(),
+                emailSent: false
+            };
+            
+            // Save booking
+            saveBooking(booking);
+            
+            // Send email notification
+            const emailSubject = `New Booking Request - ${serviceType}`;
+            const emailBody = `
+                New Booking Request Details:
+                
+                Service: ${serviceType}
+                Date: ${bookingDate}
+                Name: ${name}
+                Phone: ${phone}
+                Additional Notes: ${notes}
+                
+                Status: Pending
+                Booking ID: ${booking.id}
+                
+                Please check admin portal for more details.
+            `;
+            
+            // Create mailto link
+            const mailtoLink = `mailto:kalikundidham@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+            window.location.href = mailtoLink;
+            
+            // Show success message
+            showNotification('Booking request sent successfully! We will contact you shortly.', 'success');
+            
+            // Reset form
+            bookingForm.reset();
+        });
+    }
     
     // Set minimum date to today
     const dateInput = document.getElementById('bookingDate');
@@ -208,37 +220,25 @@ function getServiceName(serviceType) {
 
 // Function to show notification
 function showNotification(message, type) {
-    // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
     notification.textContent = message;
     
-    // Add to body
     document.body.appendChild(notification);
     
     // Show notification
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 10);
+    setTimeout(() => notification.classList.add('show'), 100);
     
     // Remove notification after 5 seconds
     setTimeout(() => {
         notification.classList.remove('show');
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 300);
+        setTimeout(() => notification.remove(), 300);
     }, 5000);
 }
 
-// Function to send booking email
-function sendBookingEmail(bookingMessage) {
-    // Implementation of sending email
-    console.log('Sending email:', bookingMessage);
-}
-
-// Function to save booking to localStorage
+// Function to save booking
 function saveBooking(booking) {
-    // Get existing bookings or initialize empty array
+    // Get existing bookings
     let bookings = JSON.parse(localStorage.getItem('kalikundiBookings') || '[]');
     
     // Add new booking

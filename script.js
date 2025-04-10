@@ -357,6 +357,11 @@ function forwardToAdminPortal(booking) {
             // Add new booking only if it doesn't exist
             adminBookings.push(booking);
             localStorage.setItem('adminBookings', JSON.stringify(adminBookings));
+            
+            // Also update the kalikundiBookings in localStorage
+            let kalikundiBookings = JSON.parse(localStorage.getItem('kalikundiBookings') || '[]');
+            kalikundiBookings.push(booking);
+            localStorage.setItem('kalikundiBookings', JSON.stringify(kalikundiBookings));
         }
         
         console.log('Booking forwarded to admin portal:', booking);

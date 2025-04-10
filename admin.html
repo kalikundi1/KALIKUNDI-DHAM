@@ -297,11 +297,18 @@
                                 bookings.push(booking);
                                 localStorage.setItem('adminBookings', JSON.stringify(bookings));
                                 
+                                // Also update kalikundiBookings
+                                let kalikundiBookings = JSON.parse(localStorage.getItem('kalikundiBookings') || '[]');
+                                if (!kalikundiBookings.find(b => b.id === booking.id)) {
+                                    kalikundiBookings.push(booking);
+                                    localStorage.setItem('kalikundiBookings', JSON.stringify(kalikundiBookings));
+                                }
+                                
                                 // Reload the table to show the new booking
                                 loadBookings();
                             }
                             
-                            // Clear the booking from sessionStorage
+                            // Clear the booking from sessionStorage after successful processing
                             sessionStorage.removeItem('lastBooking');
                         } catch (error) {
                             console.error('Error processing new booking:', error);

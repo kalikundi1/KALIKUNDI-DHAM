@@ -32,6 +32,21 @@
                 </div>
             </div>
         </nav>
+        <!-- Audio Player -->
+        <div class="audio-player">
+            <div class="container">
+                <div class="audio-controls">
+                    <button id="toggleAudio" class="btn btn-sm btn-outline-light">
+                        <i class="fas fa-volume-up"></i> Play Ambient Sounds
+                    </button>
+                    <div class="volume-control">
+                        <i class="fas fa-volume-down"></i>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="50">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
 
     <!-- Hero Section -->
@@ -132,8 +147,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Select Service Type</label>
-                            <select class="form-control" id="serviceType" required>
+                            <label for="serviceType">Select Service Type</label>
+                            <select class="form-control" id="serviceType" name="serviceType" required>
                                 <option value="">Choose a service</option>
                                 <optgroup label="Puja Services">
                                     <option value="birthday-pujan">Birthday Pujan</option>
@@ -151,38 +166,32 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Select Date</label>
-                            <input type="date" class="form-control" id="bookingDate" required>
+                            <label for="bookingDate">Select Date</label>
+                            <input type="date" class="form-control" id="bookingDate" name="bookingDate" required>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Your Name</label>
-                            <input type="text" class="form-control" id="customerName" required>
+                            <label for="name">Your Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Contact Number</label>
-                            <input type="tel" class="form-control" id="customerPhone" required>
+                            <label for="phone">Contact Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" required>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Additional Notes (Optional)</label>
-                    <textarea class="form-control" id="additionalNotes" rows="3"></textarea>
+                    <label for="notes">Additional Notes (Optional)</label>
+                    <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
                 </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="confirmBooking" required>
-                        <label class="form-check-label" for="confirmBooking">
-                            I confirm that all the information provided is correct
-                        </label>
-                    </div>
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-primary btn-lg">Book Now</button>
                 </div>
-                <button type="submit" class="btn btn-primary btn-lg">Book Now</button>
             </form>
         </div>
     </section>

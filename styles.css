@@ -578,4 +578,68 @@ body {
 .admin-link:hover {
     background-color: #a93226;
     transform: translateY(-2px);
+}
+
+/* Audio Player Styles */
+.audio-player {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.audio-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+}
+
+#volumeSlider {
+    width: 100px;
+    height: 5px;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    outline: none;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#volumeSlider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+#toggleAudio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 15px;
+    transition: all 0.3s ease;
+}
+
+#toggleAudio:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#toggleAudio.playing {
+    background: rgba(255, 255, 255, 0.2);
 } 

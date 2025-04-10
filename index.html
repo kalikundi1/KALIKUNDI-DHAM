@@ -32,20 +32,6 @@
                 </div>
             </div>
         </nav>
-        <!-- Audio Player -->
-        <div class="audio-player">
-            <h3>Ambient Sounds</h3>
-            <p>Experience the divine atmosphere with our ambient sounds:</p>
-            <ul>
-                <li>Morning Birds - Start your day with divine chirping</li>
-                <li>Peacock Call - The sacred bird of Lord Krishna</li>
-                <li>River Stream - The holy waters of Yamuna</li>
-                <li>Krishna Flute - The divine melody of Lord Krishna's flute</li>
-            </ul>
-            <button id="toggleAudio" class="btn">Play Ambient Sounds</button>
-            <input type="range" id="volumeSlider" min="0" max="100" value="50" class="volume-slider">
-            <span class="volume-label">Volume</span>
-        </div>
     </header>
 
     <!-- Hero Section -->
@@ -149,7 +135,7 @@
                 <div class="col-md-6">
                     <form id="bookingForm" class="booking-form">
                         <div class="mb-3">
-                            <label for="serviceType" class="form-label">Select Service</label>
+                            <label for="serviceType" class="form-label">Select Service <span class="text-danger">*</span></label>
                             <select class="form-select" id="serviceType" name="serviceType" required>
                                 <option value="">Choose a service...</option>
                                 <optgroup label="Puja Services">
@@ -164,22 +150,31 @@
                                     <option value="family-dining">Family Dining</option>
                                 </optgroup>
                             </select>
+                            <div class="form-text">Please select the service you wish to book</div>
                         </div>
                         <div class="mb-3">
-                            <label for="bookingDate" class="form-label">Select Date</label>
+                            <label for="bookingDate" class="form-label">Select Date <span class="text-danger">*</span></label>
                             <input type="date" class="form-control" id="bookingDate" name="bookingDate" required>
+                            <div class="form-text">Select your preferred date for the service</div>
                         </div>
                         <div class="mb-3">
-                            <label for="name" class="form-label">Your Name</label>
+                            <label for="name" class="form-label">Your Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="name" name="name" required>
+                            <div class="form-text">Enter your full name</div>
                         </div>
                         <div class="mb-3">
-                            <label for="phone" class="form-label">Phone Number</label>
+                            <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
                             <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" placeholder="10-digit mobile number" required>
+                            <div class="form-text">Enter your 10-digit mobile number</div>
                         </div>
                         <div class="mb-3">
-                            <label for="notes" class="form-label">Additional Notes (Optional)</label>
-                            <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                            <label for="notes" class="form-label">Additional Notes</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Any special requests or information"></textarea>
+                            <div class="form-text">Optional: Add any special requests or information</div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="termsCheck" required>
+                            <label class="form-check-label" for="termsCheck">I agree to the terms and conditions <span class="text-danger">*</span></label>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit Booking</button>
                     </form>
@@ -193,6 +188,12 @@
                             <li><i class="fas fa-phone"></i> <strong>Confirmation:</strong> You will receive a confirmation email</li>
                             <li><i class="fas fa-info-circle"></i> <strong>Special Events:</strong> Purnima events require 3 days advance booking</li>
                         </ul>
+                        <div class="booking-help">
+                            <h4>Need Help?</h4>
+                            <p>If you encounter any issues with booking, please contact us:</p>
+                            <p><i class="fas fa-phone"></i> <a href="tel:9332097084">9332097084</a></p>
+                            <p><i class="fas fa-envelope"></i> <a href="mailto:kalikundidham@gmail.com">kalikundidham@gmail.com</a></p>
+                        </div>
                     </div>
                 </div>
             </div>

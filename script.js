@@ -1,154 +1,3 @@
-// Audio Player Functionality
-let audioContext = null;
-let audioBuffers = {};
-let audioSources = {};
-let isPlaying = false;
-
-const SOUNDS = {
-    morning: 'https://assets.mixkit.co/sfx/preview/mixkit-morning-birds-in-the-forest-2479.mp3',
-    peacock: 'https://assets.mixkit.co/sfx/preview/mixkit-peacock-call-2469.mp3',
-    river: 'https://assets.mixkit.co/sfx/preview/mixkit-river-stream-2468.mp3',
-    krishnaFlute: 'https://assets.mixkit.co/sfx/preview/mixkit-indian-flute-melody-2467.mp3'
-};
-
-// Initialize audio context on user interaction
-function initAudio() {
-    try {
-        if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        return true;
-    } catch (error) {
-        console.error('Error initializing audio context:', error);
-        showNotification('Your browser does not support audio playback', 'error');
-        return false;
-    }
-}
-
-// Load audio buffer
-async function loadAudioBuffer(url) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const arrayBuffer = await response.arrayBuffer();
-        return await audioContext.decodeAudioData(arrayBuffer);
-    } catch (error) {
-        console.error('Error loading audio:', error);
-        showNotification('Error loading ambient sounds. Please try again.', 'error');
-        return null;
-    }
-}
-
-// Play ambient sounds
-async function playAmbientSounds() {
-    try {
-        if (!initAudio()) {
-            return;
-        }
-        
-        // Load all sounds if not already loaded
-        for (const [name, url] of Object.entries(SOUNDS)) {
-            if (!audioBuffers[name]) {
-                audioBuffers[name] = await loadAudioBuffer(url);
-            }
-            
-            if (audioBuffers[name]) {
-                const source = audioContext.createBufferSource();
-                source.buffer = audioBuffers[name];
-                source.loop = true;
-                
-                const gainNode = audioContext.createGain();
-                // Set lower volume for krishnaFlute
-                gainNode.gain.value = name === 'krishnaFlute' ? 
-                    (document.getElementById('volumeSlider').value / 100) * 0.7 : 
-                    document.getElementById('volumeSlider').value / 100;
-                
-                source.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                source.start(0);
-                audioSources[name] = { source, gainNode };
-            }
-        }
-        
-        isPlaying = true;
-        updatePlayButton();
-        
-    } catch (error) {
-        console.error('Error playing audio:', error);
-        showNotification('Error playing ambient sounds. Please try again.', 'error');
-    }
-}
-
-// Stop all sounds
-function stopAmbientSounds() {
-    try {
-        for (const [name, { source }] of Object.entries(audioSources)) {
-            try {
-                source.stop();
-            } catch (error) {
-                console.error(`Error stopping ${name} sound:`, error);
-            }
-        }
-        audioSources = {};
-        isPlaying = false;
-        updatePlayButton();
-    } catch (error) {
-        console.error('Error stopping sounds:', error);
-    }
-}
-
-// Update play button state
-function updatePlayButton() {
-    const toggleButton = document.getElementById('toggleAudio');
-    if (toggleButton) {
-        if (isPlaying) {
-            toggleButton.classList.add('playing');
-            toggleButton.innerHTML = '<i class="fas fa-volume-up"></i> Stop Ambient Sounds';
-        } else {
-            toggleButton.classList.remove('playing');
-            toggleButton.innerHTML = '<i class="fas fa-volume-up"></i> Play Ambient Sounds';
-        }
-    }
-}
-
-// Toggle audio playback
-function toggleAudio() {
-    try {
-        if (!isPlaying) {
-            if (audioContext) {
-                audioContext.resume().then(() => {
-                    playAmbientSounds();
-                }).catch(error => {
-                    console.error('Error resuming audio context:', error);
-                    showNotification('Error playing sounds. Please try again.', 'error');
-                });
-            } else {
-                playAmbientSounds();
-            }
-        } else {
-            stopAmbientSounds();
-        }
-    } catch (error) {
-        console.error('Error toggling audio:', error);
-        showNotification('Error with audio playback. Please try again.', 'error');
-    }
-}
-
-// Update volume for all playing sounds
-function updateVolume(value) {
-    try {
-        const volume = value / 100;
-        for (const { gainNode } of Object.values(audioSources)) {
-            gainNode.gain.value = volume;
-        }
-    } catch (error) {
-        console.error('Error updating volume:', error);
-    }
-}
-
 // Booking Form Handling
 document.addEventListener('DOMContentLoaded', function() {
     try {
@@ -168,6 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 bookingDateInput.value = ''; // Reset date
                 
                 if (selectedService === 'khichuri-bhog') {
+                    // Remove any existing event listeners to prevent duplicates
+                    const newBookingDateInput = bookingDateInput.cloneNode(true);
+                    bookingDateInput.parentNode.replaceChild(newBookingDateInput, bookingDateInput);
+                    bookingDateInput = newBookingDateInput;
+                    
                     bookingDateInput.addEventListener('input', function() {
                         const selectedDate = new Date(this.value);
                         if (selectedDate.getDay() !== 6) {
@@ -179,11 +33,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             // Handle form submission
-            bookingForm.addEventListener('submit', async function(e) {
+            bookingForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
                 try {
-                    // Get and validate form values
+                    // Get form values
                     const formData = {
                         serviceType: serviceTypeSelect.value,
                         bookingDate: bookingDateInput.value,
@@ -193,14 +47,36 @@ document.addEventListener('DOMContentLoaded', function() {
                     };
                     
                     // Validate required fields
-                    if (!formData.serviceType || !formData.bookingDate || !formData.name || !formData.phone) {
-                        showNotification('Please fill in all required fields', 'error');
+                    if (!formData.serviceType) {
+                        showNotification('Please select a service type', 'error');
+                        return;
+                    }
+                    
+                    if (!formData.bookingDate) {
+                        showNotification('Please select a booking date', 'error');
+                        return;
+                    }
+                    
+                    if (!formData.name) {
+                        showNotification('Please enter your name', 'error');
+                        return;
+                    }
+                    
+                    if (!formData.phone) {
+                        showNotification('Please enter your phone number', 'error');
                         return;
                     }
                     
                     // Validate phone number
                     if (!/^\d{10}$/.test(formData.phone)) {
                         showNotification('Please enter a valid 10-digit phone number', 'error');
+                        return;
+                    }
+                    
+                    // Check terms and conditions
+                    const termsCheck = document.getElementById('termsCheck');
+                    if (!termsCheck.checked) {
+                        showNotification('Please agree to the terms and conditions', 'error');
                         return;
                     }
                     
@@ -230,12 +106,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     showNotification('Booking submitted successfully! Check your email for confirmation.', 'success');
                     bookingForm.reset();
                     bookingDateInput.min = today;
+                    termsCheck.checked = false;
                     
                 } catch (error) {
                     console.error('Booking error:', error);
                     showNotification('An error occurred while processing your booking. Please try again.', 'error');
                 }
             });
+        } else {
+            console.error('Booking form elements not found');
         }
         
         // Calculate and display upcoming Purnima dates
@@ -277,18 +156,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.style.transform = 'translateY(20px)';
                 card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 observer.observe(card);
-            });
-        }
-        
-        // Initialize audio controls
-        const toggleButton = document.getElementById('toggleAudio');
-        const volumeSlider = document.getElementById('volumeSlider');
-        
-        if (toggleButton && volumeSlider) {
-            toggleButton.addEventListener('click', toggleAudio);
-            
-            volumeSlider.addEventListener('input', function() {
-                updateVolume(this.value);
             });
         }
     } catch (error) {
@@ -417,19 +284,30 @@ function saveBooking(booking) {
 
 // Function to send booking email
 function sendBookingEmail(booking) {
-    const subject = `New Booking Request - ${getServiceName(booking.serviceType)}`;
-    const body = `
+    try {
+        const subject = `New Booking Request - ${getServiceName(booking.serviceType)}`;
+        const body = `
 Booking Details:
 Service: ${getServiceName(booking.serviceType)}
-Date: ${formatDate(booking.bookingDate)}
+Date: ${formatDate(new Date(booking.bookingDate))}
 Name: ${booking.name}
 Phone: ${booking.phone}
 Notes: ${booking.notes || 'No additional notes'}
 Booking ID: ${booking.id}
-    `;
+Timestamp: ${new Date().toLocaleString()}
+        `;
 
-    const mailtoLink = `mailto:kalikundidham@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoLink;
+        const mailtoLink = `mailto:kalikundidham@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        
+        // Open email client in a new window/tab
+        window.open(mailtoLink, '_blank');
+        
+        return true;
+    } catch (error) {
+        console.error('Error sending booking email:', error);
+        showNotification('Error sending email. Please try again or contact us directly.', 'error');
+        return false;
+    }
 }
 
 // Check if current time is after 9:30 AM

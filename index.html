@@ -34,18 +34,17 @@
         </nav>
         <!-- Audio Player -->
         <div class="audio-player">
-            <div class="container">
-                <div class="audio-controls">
-                    <button id="toggleAudio" class="btn btn-sm btn-outline-light">
-                        <i class="fas fa-volume-up"></i> Play Ambient Sounds
-                    </button>
-                    <div class="volume-control">
-                        <i class="fas fa-volume-down"></i>
-                        <input type="range" id="volumeSlider" min="0" max="100" value="50">
-                        <i class="fas fa-volume-up"></i>
-                    </div>
-                </div>
-            </div>
+            <h3>Ambient Sounds</h3>
+            <p>Experience the divine atmosphere with our ambient sounds:</p>
+            <ul>
+                <li>Morning Birds - Start your day with divine chirping</li>
+                <li>Peacock Call - The sacred bird of Lord Krishna</li>
+                <li>River Stream - The holy waters of Yamuna</li>
+                <li>Krishna Flute - The divine melody of Lord Krishna's flute</li>
+            </ul>
+            <button id="toggleAudio" class="btn">Play Ambient Sounds</button>
+            <input type="range" id="volumeSlider" min="0" max="100" value="50" class="volume-slider">
+            <span class="volume-label">Volume</span>
         </div>
     </header>
 
@@ -140,16 +139,19 @@
     </section>
 
     <!-- Booking Section -->
-    <section id="booking" class="booking">
+    <section id="booking" class="booking-section">
         <div class="container">
             <h2 class="section-title">Book Your Service</h2>
-            <form id="bookingForm">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="serviceType">Select Service Type</label>
-                            <select class="form-control" id="serviceType" name="serviceType" required>
-                                <option value="">Choose a service</option>
+            <div class="booking-info">
+                <p><i class="fas fa-info-circle"></i> Bookings for today must be made before 9:30 AM</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <form id="bookingForm" class="booking-form">
+                        <div class="mb-3">
+                            <label for="serviceType" class="form-label">Select Service</label>
+                            <select class="form-select" id="serviceType" name="serviceType" required>
+                                <option value="">Choose a service...</option>
                                 <optgroup label="Puja Services">
                                     <option value="birthday-pujan">Birthday Pujan</option>
                                     <option value="onnopraton-pujan">Onnopraton Pujan</option>
@@ -157,42 +159,43 @@
                                     <option value="purnima-event">Purnima Special Event</option>
                                 </optgroup>
                                 <optgroup label="Bhog Services">
-                                    <option value="sora-bhog">Sora Bhog (₹60)</option>
-                                    <option value="khichuri-bhog">Saturday Khichuri Bhog (₹60)</option>
-                                    <option value="family-dining">Family Dining (₹100 per person)</option>
+                                    <option value="sora-bhog">Sora Bhog</option>
+                                    <option value="khichuri-bhog">Saturday Khichuri Bhog</option>
+                                    <option value="family-dining">Family Dining</option>
                                 </optgroup>
                             </select>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="bookingDate">Select Date</label>
+                        <div class="mb-3">
+                            <label for="bookingDate" class="form-label">Select Date</label>
                             <input type="date" class="form-control" id="bookingDate" name="bookingDate" required>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="name">Your Name</label>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Your Name</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="phone">Contact Number</label>
-                            <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" required>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" placeholder="10-digit mobile number" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Additional Notes (Optional)</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Booking</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <div class="booking-info-card">
+                        <h3>Booking Information</h3>
+                        <ul>
+                            <li><i class="fas fa-clock"></i> <strong>Booking Cutoff:</strong> 9:30 AM for same-day bookings</li>
+                            <li><i class="fas fa-calendar-alt"></i> <strong>Advance Booking:</strong> Available up to 30 days in advance</li>
+                            <li><i class="fas fa-phone"></i> <strong>Confirmation:</strong> You will receive a confirmation email</li>
+                            <li><i class="fas fa-info-circle"></i> <strong>Special Events:</strong> Purnima events require 3 days advance booking</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="notes">Additional Notes (Optional)</label>
-                    <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
-                </div>
-                <div class="form-group mt-3">
-                    <button type="submit" class="btn btn-primary btn-lg">Book Now</button>
-                </div>
-            </form>
+            </div>
         </div>
     </section>
 

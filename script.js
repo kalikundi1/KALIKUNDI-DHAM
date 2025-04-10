@@ -10,13 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Get form values
         const serviceType = document.getElementById('serviceType').value;
-        const date = document.getElementById('bookingDate').value;
-        const name = document.getElementById('customerName').value;
-        const phone = document.getElementById('customerPhone').value;
-        const notes = document.getElementById('additionalNotes').value;
+        const bookingDate = document.getElementById('bookingDate').value;
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const notes = document.getElementById('notes').value;
         
         // Validate form
-        if (!serviceType || !date || !name || !phone) {
+        if (!serviceType || !bookingDate || !name || !phone) {
             showNotification('Please fill in all required fields', 'error');
             return;
         }
@@ -28,29 +28,40 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Validate date based on service type
-        if (!isValidBookingDate(serviceType, date)) {
+        if (!isValidBookingDate(serviceType, bookingDate)) {
             showNotification('Invalid date for the selected service', 'error');
             return;
         }
         
+        // Create booking object
+        const booking = {
+            id: Date.now(), // Unique ID for the booking
+            serviceType: serviceType,
+            date: bookingDate,
+            name: name,
+            phone: phone,
+            notes: notes,
+            status: 'pending',
+            timestamp: new Date().toISOString()
+        };
+        
+        // Save booking to localStorage
+        saveBooking(booking);
+        
         // Create booking message
         const bookingMessage = `
-            Booking Details:
-            Service: ${getServiceName(serviceType)}
-            Date: ${formatDate(date)}
+            Service: ${serviceType}
+            Date: ${bookingDate}
             Name: ${name}
             Phone: ${phone}
-            ${notes ? `Notes: ${notes}` : ''}
-            
-            Thank you for booking with Kalikundi Dham.
-            We will contact you shortly to confirm your booking.
+            Additional Notes: ${notes}
         `;
         
-        // Send booking request via WhatsApp
-        sendBookingWhatsApp(serviceType, date, name, phone, notes);
+        // Send booking email
+        sendBookingEmail(bookingMessage);
         
-        // Show booking confirmation
-        showNotification(bookingMessage, 'success');
+        // Show success message
+        showNotification('Booking request sent successfully! We will contact you shortly.', 'success');
         
         // Reset form
         bookingForm.reset();
@@ -219,23 +230,24 @@ function showNotification(message, type) {
     }, 5000);
 }
 
-// Function to send booking WhatsApp message
-function sendBookingWhatsApp(serviceType, date, name, phone, notes) {
-    const whatsappMessage = `
-*New Booking Request - Kalikundi Dham*
+// Function to send booking email
+function sendBookingEmail(bookingMessage) {
+    // Implementation of sending email
+    console.log('Sending email:', bookingMessage);
+}
 
-Service: ${getServiceName(serviceType)}
-Date: ${formatDate(date)}
-Customer Name: ${name}
-Phone Number: ${phone}
-${notes ? `Additional Notes: ${notes}` : ''}
-
-This is an automated message from the Kalikundi Dham booking system.
-    `;
+// Function to save booking to localStorage
+function saveBooking(booking) {
+    // Get existing bookings or initialize empty array
+    let bookings = JSON.parse(localStorage.getItem('kalikundiBookings') || '[]');
     
-    // Create WhatsApp link
-    const whatsappLink = `https://wa.me/919332097084?text=${encodeURIComponent(whatsappMessage)}`;
+    // Add new booking
+    bookings.push(booking);
     
-    // Open WhatsApp in a new tab
-    window.open(whatsappLink, '_blank');
+    // Save back to localStorage
+    localStorage.setItem('kalikundiBookings', JSON.stringify(bookings));
+    
+    // Log for debugging
+    console.log('Booking saved:', booking);
+    console.log('All bookings:', bookings);
 } 

@@ -483,4 +483,17 @@ body {
 .notification.warning {
     background-color: var(--warning-color);
     color: var(--dark-bg);
+}
+
+.admin-link {
+    background-color: #c0392b;
+    color: white !important;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.admin-link:hover {
+    background-color: #a93226;
+    transform: translateY(-2px);
 } 

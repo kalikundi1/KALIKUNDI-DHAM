@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalikundi Dham - Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .admin-title {
+            font-size: 24px;
+            color: #c0392b;
+        }
+        
+        .admin-nav {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .admin-nav a {
+            color: #333;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-nav a:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .bookings-table th, .bookings-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .bookings-table th {
+            background-color: #c0392b;
+            color: white;
+        }
+        
+        .bookings-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .status-pending {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        
+        .status-confirmed {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .status-cancelled {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .confirm-btn {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .cancel-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .delete-btn {
+            background-color: #7f8c8d;
+            color: white;
+        }
+        
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+        
+        .no-bookings {
+            text-align: center;
+            padding: 50px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        
+        .filter-section {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-item label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .filter-item select, .filter-item input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .filter-btn {
+            background-color: #c0392b;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-end;
+        }
+        
+        .filter-btn:hover {
+            background-color: #a93226;
+        }
+        
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .stat-title {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .stat-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Kalikundi Dham</h1>
+                <p>Admin Dashboard</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Back to Website</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="admin-container">
+        <div class="admin-header">
+            <h2 class="admin-title">Booking Management</h2>
+            <div class="admin-nav">
+                <a href="#"><i class="fas fa-calendar-alt"></i> Today's Bookings</a>
+                <a href="#"><i class="fas fa-history"></i> Booking History</a>
+                <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-title">Total Bookings</div>
+                <div class="stat-value"><i class="fas fa-calendar-check stat-icon"></i> <span id="total-bookings">0</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Today's Bookings</div>
+                <div class="stat-value"><i class="fas fa-calendar-day stat-icon"></i> <span id="today-bookings">0</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Pending Bookings</div>
+                <div class="stat-value"><i class="fas fa-clock stat-icon"></i> <span id="pending-bookings">0</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Confirmed Bookings</div>
+                <div class="stat-value"><i class="fas fa-check-circle stat-icon"></i> <span id="confirmed-bookings">0</span></div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-item">
+                <label for="service-filter">Service Type</label>
+                <select id="service-filter">
+                    <option value="">All Services</option>
+                    <option value="birthday-pujan">Birthday Pujan</option>
+                    <option value="onnopraton-pujan">Onnopraton Pujan</option>
+                    <option value="special-pujan">Special Pujan</option>
+                    <option value="purnima-event">Purnima Special Event</option>
+                    <option value="sora-bhog">Sora Bhog</option>
+                    <option value="khichuri-bhog">Khichuri Bhog</option>
+                    <option value="family-dining">Family Dining</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="date-filter">Date</label>
+                <input type="date" id="date-filter">
+            </div>
+            <div class="filter-item">
+                <label for="status-filter">Status</label>
+                <select id="status-filter">
+                    <option value="">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            <button class="filter-btn" id="apply-filter">Apply Filter</button>
+        </div>
+
+        <table class="bookings-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Customer Name</th>
+                    <th>Phone</th>
+                    <th>Notes</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="bookings-table-body">
+                <!-- Bookings will be loaded here -->
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Kalikundi Dham. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (!localStorage.getItem('adminLoggedIn')) {
+                // Redirect to login page if not logged in
+                window.location.href = 'admin-login.html';
+                return;
+            }
+            
+            // Load bookings when page loads
+            loadBookings();
+            updateStatistics();
+            
+            // Apply filter button
+            document.getElementById('apply-filter').addEventListener('click', function() {
+                loadBookings();
+            });
+            
+            // Logout button
+            document.querySelector('.admin-nav a:last-child').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('adminLoggedIn');
+                window.location.href = 'admin-login.html';
+            });
+        });
+        
+        function loadBookings() {
+            // Get bookings from localStorage
+            const bookings = JSON.parse(localStorage.getItem('kalikundiBookings') || '[]');
+            console.log('Loading bookings:', bookings); // Debug log
+            
+            const bookingsTableBody = document.getElementById('bookings-table-body');
+            bookingsTableBody.innerHTML = '';
+
+            if (bookings.length === 0) {
+                bookingsTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center;">No bookings found</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            bookings.forEach(booking => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${booking.id}</td>
+                    <td>${booking.serviceType}</td>
+                    <td>${booking.date}</td>
+                    <td>${booking.name}</td>
+                    <td>${booking.phone}</td>
+                    <td>${booking.notes || '-'}</td>
+                    <td>
+                        <select onchange="updateBookingStatus('${booking.id}', this.value)">
+                            <option value="pending" ${booking.status === 'pending' ? 'selected' : ''}>Pending</option>
+                            <option value="confirmed" ${booking.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                            <option value="cancelled" ${booking.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button onclick="deleteBooking('${booking.id}')" class="delete-btn">Delete</button>
+                    </td>
+                `;
+                bookingsTableBody.appendChild(row);
+            });
+        }
+        
+        function updateBookingStatus(bookingId, newStatus) {
+            let bookings = JSON.parse(localStorage.getItem('kalikundiBookings') || '[]');
+            const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+            
+            if (bookingIndex !== -1) {
+                bookings[bookingIndex].status = newStatus;
+                localStorage.setItem('kalikundiBookings', JSON.stringify(bookings));
+                loadBookings();
+                updateStatistics();
+            }
+        }
+        
+        function deleteBooking(bookingId) {
+            if (confirm('Are you sure you want to delete this booking?')) {
+                let bookings = JSON.parse(localStorage.getItem('kalikundiBookings') || '[]');
+                bookings = bookings.filter(b => b.id !== bookingId);
+                localStorage.setItem('kalikundiBookings', JSON.stringify(bookings));
+                loadBookings();
+                updateStatistics();
+            }
+        }
+        
+        function updateStatistics() {
+            const bookings = JSON.parse(localStorage.getItem('kalikundiBookings') || '[]');
+            const totalBookings = bookings.length;
+            const confirmedBookings = bookings.filter(b => b.status === 'confirmed').length;
+            const pendingBookings = bookings.filter(b => b.status === 'pending').length;
+            const cancelledBookings = bookings.filter(b => b.status === 'cancelled').length;
+
+            document.getElementById('total-bookings').textContent = totalBookings;
+            document.getElementById('today-bookings').textContent = bookings.filter(b => b.date === new Date().toISOString().split('T')[0]).length;
+            document.getElementById('pending-bookings').textContent = pendingBookings;
+            document.getElementById('confirmed-bookings').textContent = confirmedBookings;
+        }
+    </script>
+</body>
+</html> 
